@@ -1,8 +1,27 @@
 import React, { Component } from 'react';
+import Login from './Components/Login';
+import Register from './Components/Register';
 import logo from './CentralLogo.png';
+
 import './App.css';
 
 class App extends Component {
+  constructor(){
+    super();
+    this.state = {
+      loggedIn: false,
+      needToRegister: false
+    };
+  }
+  checkState(){
+    if (this.state.loggedIn === false){
+      return <Login submitLogin={this.handleSubmitLogin.bind(this)} registerSelected={this.handleRegisterSelected.bind(this)}/>
+    }
+    if (this.state.needToRegister === true) {
+      return <Register/>
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -10,11 +29,19 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Central College Housing Sign-Up</h1>
         </header>
-        <p className="App-intro">
-          Please sign-up or log-in down below.
-        </p>
+        {this.checkState()}
       </div>
     );
+  }
+
+  handleSubmitLogin(loginInformation){
+    console.log(loginInformation);
+    this.setState({loggedIn:true})
+  }
+
+  handleRegisterSelected(){
+    console.log('register selected')
+    this.setState({needToRegister:true});
   }
 }
 
