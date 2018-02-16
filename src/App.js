@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import logo from './CentralLogo.png';
+import Driver from './Model/Driver.js';
 
 import './App.css';
 
