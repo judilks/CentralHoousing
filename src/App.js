@@ -13,6 +13,7 @@ class App extends Component {
       loggedIn: false,
       needToRegister: false
     };
+    this.driver = new Driver();
   }
   checkState(){
     if (this.state.loggedIn === false){
@@ -37,6 +38,7 @@ class App extends Component {
 
   handleSubmitLogin(loginInformation){
     console.log(loginInformation);
+    this.driver.handleRequest(loginInformation, "Login");
     this.setState({loggedIn:true})
   }
 

@@ -8,13 +8,11 @@ class Login extends Component {
         }
     }
 
-    handleSubmit(e) {
+    handleSubmit = () => {
         this.setState({loginInformation: {
             username: this.refs.username.value,
             password: this.refs.password.value
-        }}, function() {
-            this.props.submitLogin(this.state.loginInformation);
-        });
+        }},this.props.submitLogin(this.state.loginInformation))
     }
 
     handleRegister(){
@@ -30,7 +28,7 @@ class Login extends Component {
                 <p className="App-intro">
                 Please sign-up or log-in down below.
                 </p>
-                <form onSubmit={this.handleSubmit.bind(this)}>
+                <form onSubmit={this.handleSubmit}>
                     <div>
 			            <label>Username: </label>
 			            <input type="text" ref="username" placeholder="Enter username"/>
