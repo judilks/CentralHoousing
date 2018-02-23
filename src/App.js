@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import logo from './CentralLogo.png';
-import Driver from './Model/Driver.js';
 
 import './App.css';
 
@@ -13,7 +12,6 @@ class App extends Component {
       loggedIn: false,
       needToRegister: false
     };
-    this.driver = new Driver();
   }
   checkState(){
     if (this.state.loggedIn === false){
@@ -38,7 +36,6 @@ class App extends Component {
 
   handleSubmitLogin(loginInformation){
     console.log(loginInformation);
-    this.driver.handleRequest(loginInformation, "Login");
     this.setState({loggedIn:true})
   }
 
