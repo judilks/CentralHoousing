@@ -1,23 +1,33 @@
 {
-  "name": "CentralHousing",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "bootstrap": "^4.0.0",
-    "jquery": "^3.3.1",
-    "mongoose": "^5.0.6",
-    "popper.js": "^1.12.9",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.0.6",
-    "react-scripts": "1.1.0",
-    "redux": "^3.7.2"
-  },
+  "name": "centralhousing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "mongo-start": "md mongo-db & \"D:/judilks/Documents/Dev/MongoDB/bin/mongod.exe\" --dbpath D:\\judilks\\Documents\\DEV\\Senior Project\\MongoDB\\data"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node Server/server.js",
+    "server": "nodemon Server/server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/judilks/CentralHousing.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/judilks/CentralHousing/issues"
+  },
+  "homepage": "https://github.com/judilks/CentralHousing#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "concurrently": "^3.5.1",
+    "express": "^4.16.2",
+    "foreman": "^2.0.0",
+    "marker": "^0.1.2",
+    "mongoose": "^5.0.6",
+    "nodemon": "^1.15.1"
   }
 }
