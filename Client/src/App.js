@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Login from './Components/Login';
-import Register from './Components/Register';
+import Login from './Components/Login/Login';
+import Register from './Components/Login/Register';
 import logo from './CentralLogo.png';
 
 import './App.css';
@@ -10,10 +10,10 @@ class App extends Component {
     super();
     this.state = {
       loggedIn: false,
-      needToRegister: false
+      username: "",
     };
   }
-  checkState(){
+  checkState = () => {
     if (this.state.needToRegister === true) {
       return <Register submitRegistration = {this.handleRegistration}/>
     }
@@ -23,18 +23,6 @@ class App extends Component {
     else if (this.state.loggedIn === true) {
       return <h1>logged in</h1>
     }
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Central College Housing Sign-Up</h1>
-        </header>
-        {this.checkState()}
-      </div>
-    );
   }
 
   handleSubmitLogin = (loginInformation) => {
@@ -60,6 +48,20 @@ class App extends Component {
       return res.json;
     })
   }
+
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">Central College Housing Sign-Up</h1>
+        </header>
+        {this.checkState()}
+      </div>
+    );
+  }
+
+  
 
 }
 
