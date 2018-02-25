@@ -5,6 +5,16 @@ import logo from './CentralLogo.png';
 
 import './App.css';
 
+var users = {
+  'users': [
+    {
+      'username' : 'dilksj1', 
+      'password': '626yjjiz'
+    }  
+  ]
+
+}
+
 class App extends Component {
   constructor(){
     super();
@@ -27,10 +37,24 @@ class App extends Component {
 
   handleSubmitLogin = (loginInformation) => {
     console.log(loginInformation);
-    var users = this.getUsers();
-    console.log(users);
-    //this.setState({loggedIn:true})
+    if(this.validateUser(loginInformation)){
+      this.setState({loggedIn:true})
+    }
+    else{
+      alert('Failed to login. Invalid username or password')
+    }
   }
+
+  validateUser(loginInformation) {
+    for(var i in users.users){
+      if(users.users[i].username === loginInformation.username 
+        && users.users[i].password === loginInformation.password){
+          return true;
+      }
+    }
+    return false;
+  }
+    
 
   handleRegistration = () => {
     console.log('registration completed')
@@ -43,7 +67,15 @@ class App extends Component {
   }
 
   getUsers(){
-    fetch('/api/users')
+    fetch('http://localhost:3001/api/', {
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *omit
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'GET', // *GET, PUT, DELETE, etc.
+      mode: 'no cors', // no-cors, *same-origin
+    })
     .then(res => {
       return res.json;
     })

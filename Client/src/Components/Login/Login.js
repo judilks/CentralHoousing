@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
 class Login extends Component {
-  
+
     constructor() {
         super();
         this.state = {
             loginInformation: {
-                username:"",
-                password:""
+                username: "",
+                password: ""
             }
         }
     }
@@ -17,14 +17,14 @@ class Login extends Component {
     }
 
     handleRegister = () => {
-        this.setState({needToRegister:true},
-        function() {
-            this.props.registerSelected();
-        })
+        this.setState({ needToRegister: true },
+            function () {
+                this.props.registerSelected();
+            })
     }
 
     handleUsernameChange = (e) => {
-       this.setState({
+        this.setState({
             loginInformation: {
                 username: e.target.value,
                 password: this.state.loginInformation.password
@@ -43,25 +43,30 @@ class Login extends Component {
 
     render() {
         return (
-            <div className="App">
-                <p className="App-intro">
-                Please sign-up or log-in down below.
-                </p>
-                <div>
-			        <label>Username: </label>
-			        <input type="text" placeholder="Enter username" value={this.state.loginInformation.username} onChange={this.handleUsernameChange} />
-                </div>
-                <div>
-			        <label>Password: </label>
-			        <input type="password" placeholder="Password" value={this.state.loginInformation.password} onChange={this.handlePasswordChange}/>
-                </div>
-                <div>
-			        <button onClick={this.handleLogin}>Login</button>
-			        <button onClick={this.handleRegister}> Register</button>
-                </div>
-            </div>
-        );
-    }
-}
+            <div class="container">
+                <form class="form-signin" onSubmit={this.handleLogin}>
+                    <img class="mb-4" src="" alt="" width="72" height="72"/>
+                    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 
+                    <label for="inputUsername" class="sr-only">Username</label>
+                    <input type="text" id="inputUsername" class="form-control" placeholder="Username"value={this.state.loginInformation.username} onChange={this.handleUsernameChange} required autofocus/>
+                    
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" value={this.state.loginInformation.password} onChange={this.handlePasswordChange} required/>
+                    
+                    <div class="checkbox mb-3">
+                        <label>
+                            <input type="checkbox" value="remember-me"/> Remember me
+                        </label>
+                    </div>
+
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+                    <button class="btn btn-sm btn-secondary btn-block" onClick={this.handleRegister}>Register</button>
+                    <p class="mt-5 mb-3 text-muted">&copy; 2018</p>
+                </form>
+            </div>
+                            );
+                        }
+                    }
+                    
 export default Login;
