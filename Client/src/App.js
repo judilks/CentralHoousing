@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import Login from './Components/Login/Login';
 import Register from './Components/Login/Register';
-import logo from './CentralLogo.png';
-
+import logo from './Assets/CentralLogo.png';
 import './App.css';
+import HomepageContainer from './Components/Homepage/HomepageContainer';
 
 var users = {
   'users': [
     {
+      'name' : 'Justin Dilks',
       'username' : 'dilksj1', 
       'password': '626yjjiz'
-    }  
+    },
+    {
+      'name' : 'Hunter Pollpeter',
+      'username' : 'pollpeterh1', 
+      'password': '626yjjiz'
+    }
   ]
 
 }
@@ -31,14 +37,14 @@ class App extends Component {
       return <Login submitLogin = {this.handleSubmitLogin} registerSelected={this.handleRegisterSelected}/>
     }
     else if (this.state.loggedIn === true) {
-      return <h1>logged in</h1>
+      return <HomepageContainer {...this.props}/>
     }
   }
 
   handleSubmitLogin = (loginInformation) => {
     console.log(loginInformation);
     if(this.validateUser(loginInformation)){
-      this.setState({loggedIn:true})
+      this.setState({loggedIn:true, username:loginInformation.username})
     }
     else{
       alert('Failed to login. Invalid username or password')

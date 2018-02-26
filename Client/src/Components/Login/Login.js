@@ -43,26 +43,26 @@ class Login extends Component {
 
     render() {
         return (
-            <div class="container">
-                <form class="form-signin" onSubmit={this.handleLogin}>
-                    <img class="mb-4" src="" alt="" width="72" height="72"/>
-                    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <div className="container">
+                <form className="form-signin" onSubmit={this.handleLogin}>
+                    <img className="mb-4" src="" alt="" width="72" height="72"/>
+                    <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
 
-                    <label for="inputUsername" class="sr-only">Username</label>
-                    <input type="text" id="inputUsername" class="form-control" placeholder="Username"value={this.state.loginInformation.username} onChange={this.handleUsernameChange} required autofocus/>
+                    <label htmlFor="inputUsername" className="sr-only">Username</label>
+                    <input type="text" id="inputUsername" className="form-control" placeholder="Username"value={this.state.loginInformation.username} onChange={this.handleUsernameChange} required autoFocus/>
                     
-                    <label for="inputPassword" class="sr-only">Password</label>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" value={this.state.loginInformation.password} onChange={this.handlePasswordChange} required/>
+                    <label htmlFor="inputPassword" className="sr-only">Password</label>
+                    <input type="password" id="inputPassword" className="form-control" placeholder="Password" value={this.state.loginInformation.password} onChange={this.handlePasswordChange} required/>
                     
-                    <div class="checkbox mb-3">
+                    <div className="checkbox mb-3">
                         <label>
                             <input type="checkbox" value="remember-me"/> Remember me
                         </label>
                     </div>
 
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
-                    <button class="btn btn-sm btn-secondary btn-block" onClick={this.handleRegister}>Register</button>
-                    <p class="mt-5 mb-3 text-muted">&copy; 2018</p>
+                    <button className="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+                    <button className="btn btn-sm btn-secondary btn-block" onClick={this.handleRegister}>Register</button>
+                    <p className="mt-5 mb-3 text-muted">&copy; 2018</p>
                 </form>
             </div>
                             );
