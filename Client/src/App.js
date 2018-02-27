@@ -26,8 +26,11 @@ class App extends Component {
     super();
     this.state = {
       loggedIn: false,
-      username: "",
-    };
+      userInfo: {
+        name: "",
+        username: ""
+      }  
+    }
   }
   checkState = () => {
     if (this.state.needToRegister === true) {
@@ -37,14 +40,17 @@ class App extends Component {
       return <Login submitLogin = {this.handleSubmitLogin} registerSelected={this.handleRegisterSelected}/>
     }
     else if (this.state.loggedIn === true) {
-      return <HomepageContainer {...this.props}/>
+      return <HomepageContainer currentUser = {this.state.userInfo} userList = {this.users}/>
     }
   }
 
   handleSubmitLogin = (loginInformation) => {
     console.log(loginInformation);
     if(this.validateUser(loginInformation)){
-      this.setState({loggedIn:true, username:loginInformation.username})
+      var name = this.getUsersRealName(loginInformation)
+      this.setState({loggedIn:true, userInfo: {
+        username:loginInformation.username, name:name
+      }})
     }
     else{
       alert('Failed to login. Invalid username or password')
@@ -59,6 +65,15 @@ class App extends Component {
       }
     }
     return false;
+  }
+
+  getUsersRealName(loginInformation) {
+    for(var i in users.users){
+      if(users.users[i].username === loginInformation.username 
+        && users.users[i].password === loginInformation.password){
+          return users.users[i].name;
+      }
+    }
   }
     
 

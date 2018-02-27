@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Chat from './Chat/Chat'
+import Chat from './Chat/Chat';
+import GroupUp from './Group/GroupUp';
  
 class Homepage extends Component {
    
@@ -12,10 +13,10 @@ class Homepage extends Component {
                     random text
                 </div>
                 <div className= "col-lg-8 frame">
-                    <Chat/>
+                    <Chat {...this.props}/>
                 </div>
                 <div className= "col-sm-2">
-                   Invite to group feature
+                   <GroupUp currentUser={this.props.currentUser} userList = {this.props.userList}/>
                 </div>
                 </div>
             </div>

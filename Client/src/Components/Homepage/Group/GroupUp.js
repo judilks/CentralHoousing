@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import CurrentGroup from './CurrentGroup';
+import Group from './Group';
 import InviteToGroup from './InviteToGroup';
 class GroupUp extends Component {
 
     constructor() {
         super();
+        
     
     } 
     
@@ -13,13 +14,12 @@ class GroupUp extends Component {
         
         return (
             <div container="container" className="center">
-                <CurrentGroup/>
+                <Group currentUser={this.props.currentUser} userList = {this.props.userList} />
                 <div className="btn-group" role="group">
-                    <button className="btn btn-lg btn-primary btn-block" type="submit">Invite to Group</button>
+                    <button className="btn btn-sm btn-secondary btn-block">Invite to Group</button>
                     <button id="leaveGroup" className="btn btn-sm btn-secondary btn-block">Leave Group</button>
                 </div>
             </div>
-            
         )
     }
 }

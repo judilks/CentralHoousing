@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
- import Homepage from './Homepage';
+import Homepage from './Homepage';
  
  class HomepageContainer extends Component {
    
@@ -12,7 +12,7 @@ import React, { Component } from 'react';
  
     render() {
          return (
-             <Homepage {...this.props}/>
+             <Homepage currentUser={this.props.currentUser} userList = {this.props.userList}/>
          )
     }
 }
