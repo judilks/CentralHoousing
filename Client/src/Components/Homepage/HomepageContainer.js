@@ -12,7 +12,7 @@ import Homepage from './Homepage';
  
     render() {
          return (
-             <Homepage currentUser={this.props.currentUser} userList = {this.props.userList}/>
+            <Homepage currentUser={this.props.currentUser}/>
          )
     }
 }

@@ -15,7 +15,7 @@ var users = {
     {
       'name' : 'Hunter Pollpeter',
       'username' : 'pollpeterh1', 
-      'password': '626yjjiz'
+      'password': '626yjjiz!'
     }
   ]
 
@@ -26,12 +26,10 @@ class App extends Component {
     super();
     this.state = {
       loggedIn: false,
-      userInfo: {
-        name: "",
-        username: ""
-      }  
+      currentUser: ""
     }
   }
+
   checkState = () => {
     if (this.state.needToRegister === true) {
       return <Register submitRegistration = {this.handleRegistration}/>
@@ -40,32 +38,46 @@ class App extends Component {
       return <Login submitLogin = {this.handleSubmitLogin} registerSelected={this.handleRegisterSelected}/>
     }
     else if (this.state.loggedIn === true) {
-      return <HomepageContainer currentUser = {this.state.userInfo} userList = {this.users}/>
+      return <HomepageContainer currentUser = {this.state.currentUser}/>
     }
   }
+
+  // handleSubmitLogin = (loginInformation) => {
+  //   console.log(loginInformation);
+  //   for(var i in users.users){
+  //     if(users.users[i].username === loginInformation.username 
+  //       && users.users[i].password === loginInformation.password){
+  //         var name = this.getUsersRealName(loginInformation);
+  //         this.setState({loggedIn:true, userInfo: {username:loginInformation.username, name:name}})
+  //     }
+  //   }
+  // }
 
   handleSubmitLogin = (loginInformation) => {
-    console.log(loginInformation);
-    if(this.validateUser(loginInformation)){
-      var name = this.getUsersRealName(loginInformation)
-      this.setState({loggedIn:true, userInfo: {
-        username:loginInformation.username, name:name
-      }})
-    }
-    else{
-      alert('Failed to login. Invalid username or password')
-    }
+    var userInfo = this.getUser(loginInformation);
+    var name = this.getUsersRealName(loginInformation);
+    this.setState({loggedIn:true, currentUser:userInfo})
+  }    
+
+  getUser(loginInformation) {
+    fetch('http://localhost:3001/api/getUser', {
+      body: JSON.stringify(loginInformation),
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *omit
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST', // *GET, PUT, DELETE, etc.
+      mode: 'no cors', // no-cors, *same-origin
+    })
+    .then( (res) => {
+      var userInfo = res.json();
+      console.log(userInfo)
+      return userInfo
+    })
+    
   }
 
-  validateUser(loginInformation) {
-    for(var i in users.users){
-      if(users.users[i].username === loginInformation.username 
-        && users.users[i].password === loginInformation.password){
-          return true;
-      }
-    }
-    return false;
-  }
 
   getUsersRealName(loginInformation) {
     for(var i in users.users){
@@ -87,20 +99,7 @@ class App extends Component {
     this.setState({needToRegister:true});
   }
 
-  getUsers(){
-    fetch('http://localhost:3001/api/', {
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *omit
-      headers: {
-        'content-type': 'application/json'
-      },
-      method: 'GET', // *GET, PUT, DELETE, etc.
-      mode: 'no cors', // no-cors, *same-origin
-    })
-    .then(res => {
-      return res.json;
-    })
-  }
+  
 
   render() {
     return (

@@ -3,7 +3,8 @@ import Chat from './Chat/Chat';
 import GroupUp from './Group/GroupUp';
  
 class Homepage extends Component {
-   
+
+
     render() {
         var textStyle = {background:'black'};
         return (
@@ -16,7 +17,7 @@ class Homepage extends Component {
                     <Chat {...this.props}/>
                 </div>
                 <div className= "col-sm-2">
-                   <GroupUp currentUser={this.props.currentUser} userList = {this.props.userList}/>
+                   <GroupUp currentUser={this.props.currentUser}/>
                 </div>
                 </div>
             </div>

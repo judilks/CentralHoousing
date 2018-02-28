@@ -9,10 +9,39 @@ var port = 3001
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use((req,res,next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-requested-With, content-type, authorization');
+    next();
+})
 
 router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
+    console.log('hello')
+    let tempRes = { username: 'dilksj1', password:'626yjjiz' }
+    res.json(tempRes);
 });
+
+router.post('/getUser/', (req, res) => {
+    var user = {
+        "_id":"5a749892cfb9c6015c91052a",
+        "firstName":"Justin",
+        "lastName":"Dilks",
+        "email":"dilksj1@central.edu",
+        "gender":"M",
+        "id":"1079753",
+        "housingNumber":1,
+        "loginInformation":{"username":"dilksj1","password":"626yjjiz!"}}
+    var username = req.body.username;
+    var password = req.body.password;
+    console.log(req.body)
+    if(user.loginInformation.username === username && user.loginInformation.password === password)
+        res.json(user);
+    else
+        res.json('error')
+})
+
+
 
 app.use('/api', router);
 

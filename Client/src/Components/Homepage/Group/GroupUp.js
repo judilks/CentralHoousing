@@ -14,7 +14,7 @@ class GroupUp extends Component {
         
         return (
             <div container="container" className="center">
-                <Group currentUser={this.props.currentUser} userList = {this.props.userList} />
+                <Group currentUser={this.props.currentUser} />
                 <div className="btn-group" role="group">
                     <button className="btn btn-sm btn-secondary btn-block">Invite to Group</button>
                     <button id="leaveGroup" className="btn btn-sm btn-secondary btn-block">Leave Group</button>
