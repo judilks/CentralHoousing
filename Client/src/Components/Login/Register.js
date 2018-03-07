@@ -55,6 +55,10 @@ class Register extends Component {
     this.setState({working:true}, this.props.submitRegistration())
 
   }
+
+  returnToLogin = () => {
+    this.props.resetLogin();
+  }
 }
 
 export default Register;

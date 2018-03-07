@@ -41,6 +41,25 @@ class Login extends Component {
         })
     }
 
+    getUser() {
+        fetch('http://localhost:3001/api/getUser', {
+          body: JSON.stringify(this.state.loginInformation),
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: 'same-origin', // include, *omit
+          headers: {
+            'content-type': 'application/json'
+          },
+          method: 'POST', // *GET, PUT, DELETE, etc.
+          mode: 'no cors', // no-cors, *same-origin
+        })
+        .then( (res) => {
+          var userInfo = res.json();
+          console.log(userInfo)
+        })
+        .then((userInfo) => this.handleLogin(userInfo))
+        
+    }
+
     render() {
         return (
             <div className="container">

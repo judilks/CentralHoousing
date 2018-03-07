@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Login from './Components/Login/Login';
 import Register from './Components/Login/Register';
 import logo from './Assets/CentralLogo.png';
@@ -29,15 +29,20 @@ class App extends Component {
       currentUser: ""
     }
   }
+  
+  reLogin = () => {
+
+  } 
 
   checkState = () => {
     if (this.state.needToRegister === true) {
-      return <Register submitRegistration = {this.handleRegistration}/>
+      return <Register submitRegistration = {this.handleRegistration} returnToLogin = {this.reLogin}/>
     }
     else if (this.state.loggedIn === false){
-      return <Login submitLogin = {this.handleSubmitLogin} registerSelected={this.handleRegisterSelected}/>
+      return <Login submitLogin = {this.handleSubmitLogin.bind(this)} registerSelected={this.handleRegisterSelected}/>
     }
     else if (this.state.loggedIn === true) {
+      console.log(this.state)
       return <HomepageContainer currentUser = {this.state.currentUser}/>
     }
   }
@@ -48,19 +53,19 @@ class App extends Component {
   //     if(users.users[i].username === loginInformation.username 
   //       && users.users[i].password === loginInformation.password){
   //         var name = this.getUsersRealName(loginInformation);
-  //         this.setState({loggedIn:true, userInfo: {username:loginInformation.username, name:name}})
+  //         this.setState({loggedIn:true, currentUser: {username:loginInformation.username, name:name}})
   //     }
   //   }
   // }
 
   handleSubmitLogin = (loginInformation) => {
     var userInfo = this.getUser(loginInformation);
-    var name = this.getUsersRealName(loginInformation);
-    this.setState({loggedIn:true, currentUser:userInfo})
+    //var name = this.getUsersRealName(loginInformation);
+    
   }    
 
   getUser(loginInformation) {
-    fetch('http://localhost:3001/api/getUser', {
+    return fetch('http://localhost:3001/api/getUser', {
       body: JSON.stringify(loginInformation),
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *omit
@@ -72,8 +77,7 @@ class App extends Component {
     })
     .then( (res) => {
       var userInfo = res.json();
-      console.log(userInfo)
-      return userInfo
+      this.setState({loggedIn:true, currentUser:userInfo})
     })
     
   }
