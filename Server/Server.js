@@ -1,8 +1,7 @@
-//import user from './User.js';
-'use strict'
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+// var models = require('./Models.js')
 var app = express();
 var router = express.Router();
 var port = 3001
@@ -15,58 +14,156 @@ app.use((req,res,next) => {
     res.setHeader('Access-Control-Allow-Headers', 'X-requested-With, content-type, authorization');
     next();
 })
-
-router.get('/', function(req, res) {
-    console.log('hello')
-    let tempRes = { username: 'dilksj1', password:'626yjjiz' }
-    res.json(tempRes);
+app.use('/api', router); 
+app.listen(port, function() {
+    console.log(`api running on port ${port}`);
 });
 
-router.post('/getUser/', (req, res) => {
-    var user = {
-        "_id":"5a749892cfb9c6015c91052a",
-        "firstName":"Justin",
-        "lastName":"Dilks",
-        "email":"dilksj1@central.edu",
-        "gender":"M",
-        "id":"1079753",
-        "housingNumber":1,
-        "loginInformation":{"username":"dilksj1","password":"626yjjiz!"}}
-    var username = req.body.username;
-    var password = req.body.password;
-    console.log(req.body)
-    if(user.loginInformation.username === username && user.loginInformation.password === password)
-        res.json(user);
-    else
-        res.json('error')
+let Schema = mongoose.Schema
+
+var userSchema = new Schema({
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    gender: {
+        type: String,
+        required: true
+    },
+    id: {
+        type: String,
+        required: true
+    },
+    housingNumber: {
+       type: String,
+        required: true
+    },
+    loginInformation: {
+        username: {
+            type: String,
+            required: true
+        },
+        password: {
+            type: String,
+            required: true
+        }
+    }
+
+})
+
+var roomSchema = new Schema({
+    roomNumber: {
+        type: String,
+        required: true
+    },
+    floor: {
+        type: String,
+        required: true
+    },
+    building: {
+        type: String,
+        required: true
+    },
+    AC: {
+        type: String,
+        required: true
+    },
+    bathroom: {
+        type: String,
+        required: true
+    },
+    capacity: {
+       type: String,
+        required: true
+    },
+    occupied: {
+        type: Boolean,
+        required:true
+    },
+    occupants: {
+        occupant1: {
+            firstName: {
+                type: String,
+                required: false
+            },
+            lastName: {
+                type: String,
+                required: false
+            }  
+        },
+        occupant2: {
+            firstName: {
+                type: String,
+                required: false
+            },
+            lastName: {
+                type: String,
+                required: false
+            }  
+        },
+        occupant3: {
+            firstName: {
+                type: String,
+                required: false
+            },
+            lastName: {
+                type: String,
+                required: false
+            }  
+        }
+    }
+        
 })
 
 
+var roomModel = mongoose.model('rooms', roomSchema)
 
-app.use('/api', router);
+function generateRooms(building, numberOfRooms, floor, startingRoom) {
+    for(i= startingRoom; i<numberOfRooms; i++){
+        var room = new roomModel({ 
+            roomNumber: i,
+            floor: floor,
+            building: building,
+            AC: 'No',
+            bathroom: 'Public',
+            capacity: '2',
+            occupied:false
+        });
+        room.save(function(err, room){
+            if(err) console.log(err)
+            console.log(room)
+        })
+    }
+}
 
-/*app.get('/api/users', (req, res) => {
-    var users = [
-      {username: 'jdilks', password: 'blahblah'}  
-    ];
-    res.send('hello world');
-    console.log(res);
-  });
-*/
-app.listen(port, function() {
+mongoose.connect('mongodb://localhost:27017/centralhousing')
+var userModel = mongoose.model('users', userSchema)
 
-    console.log(`api running on port ${port}`);
-   
-   });
-
-function handleRequest(data, req) {
-    var uri = 'mongodb://localhost:27017/centralhousing'
-    mongoose.connect(uri);
-    var connection = mongoose.connection;
-    connection.on('error', console.log('Mongo Connection Error'));
-    connection.once('open', () => {
-         if(req === "Login") {
-
-        }
+router.post('/getUser/', (req, res) => {
+    console.log(req.body)
+    var username = req.body.username;
+    var password = req.body.password;
+    console.log('attempting find')
+    userModel.findOne({'loginInformation.username': username}, function (err, user) {
+        if(!user || password != user.loginInformation.password) {
+            res.send(401);
+            throw err
+        } 
+        res.send(user);
     })
-} 
+})
+
+router.get('/getUsers/', (req, res) => {
+    console.log('attempting find')
+    userModel.findOne({'loginInformation.username': 'dilksj1'}, function (err, user) {
+        res.send(user);
+    })
+})

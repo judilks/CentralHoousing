@@ -41,29 +41,9 @@ class Login extends Component {
         })
     }
 
-    getUser() {
-        fetch('http://localhost:3001/api/getUser', {
-          body: JSON.stringify(this.state.loginInformation),
-          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: 'same-origin', // include, *omit
-          headers: {
-            'content-type': 'application/json'
-          },
-          method: 'POST', // *GET, PUT, DELETE, etc.
-          mode: 'no cors', // no-cors, *same-origin
-        })
-        .then( (res) => {
-          var userInfo = res.json();
-          console.log(userInfo)
-        })
-        .then((userInfo) => this.handleLogin(userInfo))
-        
-    }
-
     render() {
         return (
             <div className="container">
-                <form className="form-signin" onSubmit={this.handleLogin}>
                     <img className="mb-4" src="" alt="" width="72" height="72"/>
                     <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
 
@@ -79,10 +59,9 @@ class Login extends Component {
                         </label>
                     </div>
 
-                    <button className="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+                    <button className="btn btn-lg btn-primary btn-block" onClick={this.handleLogin}>Sign In</button>
                     <button className="btn btn-sm btn-secondary btn-block" onClick={this.handleRegister}>Register</button>
                     <p className="mt-5 mb-3 text-muted">&copy; 2018</p>
-                </form>
             </div>
                             );
                         }

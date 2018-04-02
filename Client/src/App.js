@@ -25,8 +25,10 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
+      //loggedIn: true,
+      //currentUser: {"_id":"5a749892cfb9c6015c91052a","firstName":"Justin","lastName":"Dilks","email":"dilksj1@central.edu","gender":"M","id":"1079753","housingNumber":1,"loginInformation":{"username":"dilksj1","password":"626yjjiz!"}}
       loggedIn: false,
-      currentUser: ""
+      currentUser: "",
     }
   }
   
@@ -47,24 +49,8 @@ class App extends Component {
     }
   }
 
-  // handleSubmitLogin = (loginInformation) => {
-  //   console.log(loginInformation);
-  //   for(var i in users.users){
-  //     if(users.users[i].username === loginInformation.username 
-  //       && users.users[i].password === loginInformation.password){
-  //         var name = this.getUsersRealName(loginInformation);
-  //         this.setState({loggedIn:true, currentUser: {username:loginInformation.username, name:name}})
-  //     }
-  //   }
-  // }
 
   handleSubmitLogin = (loginInformation) => {
-    var userInfo = this.getUser(loginInformation);
-    //var name = this.getUsersRealName(loginInformation);
-    
-  }    
-
-  getUser(loginInformation) {
     return fetch('http://localhost:3001/api/getUser', {
       body: JSON.stringify(loginInformation),
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -76,11 +62,20 @@ class App extends Component {
       mode: 'no cors', // no-cors, *same-origin
     })
     .then( (res) => {
-      var userInfo = res.json();
-      this.setState({loggedIn:true, currentUser:userInfo})
+      try{
+        if(res.status == '401'){
+          throw "Invalid Login"
+        }
+        return res.json();
+      }
+      catch(e){
+        alert(e);
+      }
+    }).then(json => {
+      if(json !== undefined)
+        this.setState({loggedIn:true, currentUser:json})
     })
-    
-  }
+  }    
 
 
   getUsersRealName(loginInformation) {
