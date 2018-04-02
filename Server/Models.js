@@ -100,8 +100,8 @@ var roomSchema = new Schema({
         
 })
 
-var userModel = mongoose.model('users', userSchema);
+//var userModel = mongoose.model('users', userSchema);
 //let roomModel = mongoose.model('rooms', roomSchema)
 
-exports.userModel = userModel;
+//exports.userModel = userModel;
 //exports.roomModel = roomModel;
