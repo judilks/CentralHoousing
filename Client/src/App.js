@@ -41,7 +41,7 @@ class App extends Component {
       return <Register submitRegistration = {this.handleRegistration} returnToLogin = {this.reLogin}/>
     }
     else if (this.state.loggedIn === false){
-      return <Login submitLogin = {this.handleSubmitLogin.bind(this)} registerSelected={this.handleRegisterSelected}/>
+      return <Login submitLogin = {this.handleSubmitLogin} registerSelected={this.handleRegisterSelected}/>
     }
     else if (this.state.loggedIn === true) {
       console.log(this.state)

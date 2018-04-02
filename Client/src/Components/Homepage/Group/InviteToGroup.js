@@ -63,36 +63,45 @@ class InviteToGroup extends Component {
         filteredUsers = this.users.filter(user => user.name.includes(this.state.currentSearch))
         return filteredUsers;
     }
+
+    handleCancel = () => {
+        this.props.exitSearch()
+    }
     
     render() {
         var ulStyle = {
-            margin:"80px 0px 0px 0px"
+            
         };
+
         return (
             <div className="container">
                 <div>
-                    <SearchBar handleSearchChange={this.handleSearchChange}/>
+                    <SearchBar handleSearchChange={this.handleSearchChange} handleCancel={this.handleCancel}/>
                 </div>
                 <div>
-                    <ul style={ulStyle}>
+                    <table className="table table-bordered" style={{margin:"20px 0px 0px 0px"}}>
                         {this.getFilteredUsersList()
-                            .map(user => <li>{user.name}</li>)
+                            .map(user => <tr><td>{user.name} <button id="inviteButton" style={{float:"right"}} className="btn btn-primary">Invite</button></td></tr>)
                         }
-                    </ul>
+                    </table>
                 </div>
             </div>
         )
     }
 
+    
+
 }
 
-let SearchBar = ({handleSearchChange}) => {
+let SearchBar = ({handleSearchChange, handleCancel}) => {
     var searchStyle = {
-        margin:"20px 0px 0px 0px"
+        margin:"20px 0px 0px 0px",
+        width:"70%",
     };
     return (
         <div>
-            <input type="text" className="form-control" style={searchStyle} placeholder="Search.." name="search" onChange={handleSearchChange}/>
+            <input type="text" className="form-control Search-bar" placeholder="Search.." name="search" onChange={handleSearchChange} style={{display:"inline-block"}}/>
+            <button id="cancelButton" className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
         </div>
     );
 }

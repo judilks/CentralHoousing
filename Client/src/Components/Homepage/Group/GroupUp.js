@@ -13,15 +13,19 @@ class GroupUp extends Component {
     
     checkState = () => {
         if (this.state.loadInviteComponent === true) {
-          return <InviteToGroup/>
+          return <InviteToGroup exitSearch={this.exitInviteComponent}/>
         }
         else if (this.state.loadInviteComponent === false){
-          return <Group currentUser={this.props.currentUser} openSearch = {this.openInviteComponent}/>
+          return <Group currentUser={this.props.currentUser} openSearch={this.openInviteComponent}/>
         }
       }
 
       openInviteComponent = () => {
           this.setState({loadInviteComponent:true})
+      }
+
+      exitInviteComponent = () => {
+          this.setState({loadInviteComponent:false})
       }
     
     render() {
