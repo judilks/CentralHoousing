@@ -5,22 +5,6 @@ import logo from './Assets/CentralLogo.png';
 import './App.css';
 import HomepageContainer from './Components/Homepage/HomepageContainer';
 
-var users = {
-  'users': [
-    {
-      'name' : 'Justin Dilks',
-      'username' : 'dilksj1', 
-      'password': '626yjjiz'
-    },
-    {
-      'name' : 'Hunter Pollpeter',
-      'username' : 'pollpeterh1', 
-      'password': '626yjjiz!'
-    }
-  ]
-
-}
-
 class App extends Component {
   constructor(){
     super();

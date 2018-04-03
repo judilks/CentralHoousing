@@ -19,6 +19,8 @@ app.listen(port, function() {
     console.log(`api running on port ${port}`);
 });
 
+var currentGroups = []
+
 let Schema = mongoose.Schema
 
 var userSchema = new Schema({
@@ -126,23 +128,23 @@ var roomSchema = new Schema({
 
 var roomModel = mongoose.model('rooms', roomSchema)
 
-function generateRooms(building, numberOfRooms, floor, startingRoom) {
-    for(i= startingRoom; i<numberOfRooms; i++){
-        var room = new roomModel({ 
-            roomNumber: i,
-            floor: floor,
-            building: building,
-            AC: 'No',
-            bathroom: 'Public',
-            capacity: '2',
-            occupied:false
-        });
-        room.save(function(err, room){
-            if(err) console.log(err)
-            console.log(room)
-        })
-    }
-}
+// function generateRooms(building, numberOfRooms, floor, startingRoom) {
+//     for(i= startingRoom; i<numberOfRooms; i++){
+//         var room = new roomModel({ 
+//             roomNumber: i,
+//             floor: floor,
+//             building: building,
+//             AC: 'No',
+//             bathroom: 'Public',
+//             capacity: '2',
+//             occupied:false
+//         });
+//         room.save(function(err, room){
+//             if(err) console.log(err)
+//             console.log(room)
+//         })
+//     }
+// }
 
 mongoose.connect('mongodb://localhost:27017/centralhousing')
 var userModel = mongoose.model('users', userSchema)
@@ -158,6 +160,9 @@ router.post('/getUser/', (req, res) => {
             throw err
         } 
         res.send(user);
+        currentGroups.push({'housingNumber':user.housingNumber, 'group':{'user1':user} })
+        console.log(currentGroups)
+        console.log(currentGroups[0].group.user1.firstName)
     })
 })
 
