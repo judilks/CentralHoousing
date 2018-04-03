@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import GroupUp from './Group/GroupUp';
+import Map from './Map/Map.js'
  
 class Homepage extends Component {
 
@@ -13,6 +14,7 @@ class Homepage extends Component {
                     random text
                 </div>
                 <div className= "col-lg-8 frame">
+                    <Map/>
                 </div>
                 <div className= "col-sm-2">
                    <GroupUp currentUser={this.props.currentUser}/>
