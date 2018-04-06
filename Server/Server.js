@@ -153,22 +153,19 @@ router.post('/getUser/', (req, res) => {
     console.log(req.body)
     var username = req.body.username;
     var password = req.body.password;
-    console.log('attempting find')
     userModel.findOne({'loginInformation.username': username}, function (err, user) {
         if(!user || password != user.loginInformation.password) {
-            res.send(401);
-            throw err
-        } 
-        res.send(user);
+            res.sendStatus(401);
+        }
+        else{
+            res.send(user);
         currentGroups.push({'housingNumber':user.housingNumber, 'group':{'user1':user} })
-        console.log(currentGroups)
-        console.log(currentGroups[0].group.user1.firstName)
+        } 
     })
 })
 
-router.get('/getUsers/', (req, res) => {
-    console.log('attempting find')
-    userModel.findOne({'loginInformation.username': 'dilksj1'}, function (err, user) {
-        res.send(user);
-    })
+router.get('/getCurrentGroups/', (req, res) => {
+    console.log('inGet')
+    res.send(currentGroups)
+    console.log('sending groups')
 })

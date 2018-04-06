@@ -69,10 +69,6 @@ class InviteToGroup extends Component {
     }
     
     render() {
-        var ulStyle = {
-            
-        };
-
         return (
             <div className="container">
                 <div>

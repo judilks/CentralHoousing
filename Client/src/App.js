@@ -35,7 +35,7 @@ class App extends Component {
 
 
   handleSubmitLogin = (loginInformation) => {
-    return fetch('http://localhost:3001/api/getUser', {
+    fetch('http://localhost:3001/api/getUser', {
       body: JSON.stringify(loginInformation),
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *omit
@@ -45,7 +45,7 @@ class App extends Component {
       method: 'POST', // *GET, PUT, DELETE, etc.
       mode: 'no cors', // no-cors, *same-origin
     })
-    .then( (res) => {
+    .then(res => {
       try{
         if(res.status == '401'){
           throw "Invalid Login"
@@ -59,18 +59,7 @@ class App extends Component {
       if(json !== undefined)
         this.setState({loggedIn:true, currentUser:json})
     })
-  }    
-
-
-  getUsersRealName(loginInformation) {
-    for(var i in users.users){
-      if(users.users[i].username === loginInformation.username 
-        && users.users[i].password === loginInformation.password){
-          return users.users[i].name;
-      }
-    }
-  }
-    
+  }        
 
   handleRegistration = () => {
     console.log('registration completed')

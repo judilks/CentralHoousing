@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
 import GroupUp from './Group/GroupUp';
-import Map from './Map/Map.js'
+import MapView from './MapView/MapView';
+import PeckingOrder from './PeckingOrder/PeckingOrder';
  
 class Homepage extends Component {
 
 
     render() {
-        var textStyle = {background:'black'};
         return (
             <div container="container">
                 <div className="row">
-                <div className= "col-sm-2" style={textStyle}>
-                    random text
+                <div className= "col-sm-2">
+                    <PeckingOrder/>
                 </div>
                 <div className= "col-lg-8 frame">
-                    <Map/>
+                    <MapView/>
                 </div>
                 <div className= "col-sm-2">
                    <GroupUp currentUser={this.props.currentUser}/>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-class Map extends Component {
+class MapView extends Component {
 
     constructor() {
         super();
@@ -11,7 +11,7 @@ class Map extends Component {
     } 
     
     checkState = () => {
-      }
+    }
     
     render() {
         
@@ -43,4 +43,4 @@ class Map extends Component {
         )
     }
 }
-export default Map;
+export default MapView;
