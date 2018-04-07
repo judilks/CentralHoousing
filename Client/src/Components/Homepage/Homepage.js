@@ -10,15 +10,15 @@ class Homepage extends Component {
         return (
             <div container="container">
                 <div className="row">
-                <div className= "col-sm-2">
-                    <PeckingOrder/>
-                </div>
-                <div className= "col-lg-8 frame">
-                    <MapView/>
-                </div>
-                <div className= "col-sm-2">
-                   <GroupUp currentUser={this.props.currentUser}/>
-                </div>
+                    <div className= "col-sm-2">
+                        <PeckingOrder/>
+                    </div>
+                    <div className= "col-lg-8 frame">
+                        <MapView/>
+                    </div>
+                    <div className= "col-sm-2">
+                    <GroupUp currentUser={this.props.currentUser}/>
+                    </div>
                 </div>
             </div>
         )

@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var app = express();
 var router = express.Router();
 var port = 3001
+var group = require("./Group.js");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -149,7 +150,7 @@ var roomModel = mongoose.model('rooms', roomSchema)
 mongoose.connect('mongodb://localhost:27017/centralhousing')
 var userModel = mongoose.model('users', userSchema)
 
-router.post('/getUser/', (req, res) => {
+router.post('/logIn/', (req, res) => {
     console.log(req.body)
     var username = req.body.username;
     var password = req.body.password;
@@ -159,13 +160,71 @@ router.post('/getUser/', (req, res) => {
         }
         else{
             res.send(user);
-        currentGroups.push({'housingNumber':user.housingNumber, 'group':{'user1':user} })
+            var group = new Group([user])
+            currentGroups.push(group)
         } 
     })
 })
 
-router.get('/getCurrentGroups/', (req, res) => {
-    console.log('inGet')
-    res.send(currentGroups)
-    console.log('sending groups')
+router.get('/getAverageNumberGroups/', (req, res) => {
+    let averageNumbersArray = []
+    for (i in currentGroups) {
+        averageNumbersArray.push(currentGroups[i].getAverageNumber())
+    }
+    res.send(averageNumbersArray)
 })
+
+router.post('/logOut/', (req,res) => {
+    console.log(req.body)
+    currentUser = req.body
+    for(var i in currentGroups) {
+        for(var j in currentGroups[i].users) {
+            if(currentUser.loginInformation.username === currentGroups[i].users[j].loginInformation.username) {
+                currentGroups[i].users.splice(j, 1)
+                res.sendStatus(202)
+                if(currentGroups[i].users.length === 0) {
+                    currentGroups.splice(i, 1)
+                }
+            }
+        }
+    }
+        
+})
+
+
+
+
+function Group(user) {
+    this.users = user;
+    this.averageNumber = user[0].housingNumber
+    console.log(this.averageNumber)
+}
+
+Group.prototype.getUsers = function() {
+    return this.users;
+};
+
+Group.prototype.addUser = function(user) {
+    this.users.push(user)
+}
+
+Group.prototype.removeUser = function(user) {
+    let userLocation = this.users.find(user)
+    this.users.splice(userLocation, 1)
+}
+
+Group.prototype.getUser = function(user) {
+    let userLocation = this.users.find(user)
+    return this.users[userLocation]
+}
+
+Group.prototype.getAverageNumber = function() {
+    let accumulatedNumber = 0
+    for(var i in this.users) {
+        accumulatedNumber += this.users[i].housingNumber
+    }
+    console.log(accumulatedNumber)
+    return this.averageNumber = accumulatedNumber/this.users.length
+}
+
+module.exports = Group;

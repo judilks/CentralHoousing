@@ -1,24 +1,20 @@
 import React, {Component} from 'react';
 import Login from './Components/Login/Login';
 import Register from './Components/Login/Register';
-import logo from './Assets/CentralLogo.png';
 import './App.css';
 import HomepageContainer from './Components/Homepage/HomepageContainer';
+import Header from './Header'
 
 class App extends Component {
   constructor(){
     super();
     this.state = {
-      //loggedIn: true,
-      //currentUser: {"_id":"5a749892cfb9c6015c91052a","firstName":"Justin","lastName":"Dilks","email":"dilksj1@central.edu","gender":"M","id":"1079753","housingNumber":1,"loginInformation":{"username":"dilksj1","password":"626yjjiz!"}}
+      // loggedIn: true,
+      // currentUser: {"_id":"5a749892cfb9c6015c91052a","firstName":"Justin","lastName":"Dilks","email":"dilksj1@central.edu","gender":"M","id":"1079753","housingNumber":1,"loginInformation":{"username":"dilksj1","password":"626yjjiz!"}}
       loggedIn: false,
       currentUser: "",
     }
   }
-  
-  reLogin = () => {
-
-  } 
 
   checkState = () => {
     if (this.state.needToRegister === true) {
@@ -35,7 +31,7 @@ class App extends Component {
 
 
   handleSubmitLogin = (loginInformation) => {
-    fetch('http://localhost:3001/api/getUser', {
+    fetch('http://localhost:3001/api/logIn', {
       body: JSON.stringify(loginInformation),
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *omit
@@ -71,15 +67,39 @@ class App extends Component {
     this.setState({needToRegister:true});
   }
 
+  handleLogOut = () => {
+    fetch('http://localhost:3001/api/logOut', {
+      body: JSON.stringify(this.state.currentUser),
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *omit
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST', // *GET, PUT, DELETE, etc.
+      mode: 'no cors', // no-cors, *same-origin
+    })
+    .then(res => {
+      try{
+        if(res.status == '401'){
+          throw "Invalid Logout"
+        }
+        return res;
+      }
+      catch(e){
+        alert(e);
+      }
+    }).then(res => {
+      if(res.status == "202")
+        this.setState({loggedIn:false, currentUser: ""})
+    })
+  }
+
   
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Central College Housing Sign-Up</h1>
-        </header>
+      <Header loggedIn = {this.state.loggedIn} logOut = {this.handleLogOut}/>
         {this.checkState()}
       </div>
     );
