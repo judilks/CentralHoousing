@@ -18,7 +18,7 @@ class App extends Component {
 
   checkState = () => {
     if (this.state.needToRegister === true) {
-      return <Register submitRegistration = {this.handleRegistration} returnToLogin = {this.reLogin}/>
+      return <Register submitRegistration = {this.handleRegistration} returnToLogin = {this.handleReturnToLogin}/>
     }
     else if (this.state.loggedIn === false){
       return <Login submitLogin = {this.handleSubmitLogin} registerSelected={this.handleRegisterSelected}/>
@@ -57,10 +57,32 @@ class App extends Component {
     })
   }        
 
-  handleRegistration = () => {
-    console.log('registration completed')
+  handleRegistration = (registerInformation) => {
+    fetch('http://localhost:3001/api/register', {
+      body: JSON.stringify(registerInformation),
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *omit
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST', // *GET, PUT, DELETE, etc.
+      mode: 'no cors', // no-cors, *same-origin
+    })
+    .then(res => {
+      if(res.status === 400){
+        alert("Registration Failed")
+      }
+      else if(res.status === 201) {
+        this.setState({needToRegister:false})
+        alert("Registration Complete")
+      }
+    })
+  }
+
+  handleReturnToLogin = () => {
     this.setState({needToRegister:false});
   }
+
 
   handleRegisterSelected = () => {
     console.log('register selected')

@@ -36,6 +36,7 @@ class PeckingOrder extends Component {
         }
         })
         .then(json => {
+            json.sort((a,b) => {return a - b})
             this.setState({peckingOrder: json})
         })
     }

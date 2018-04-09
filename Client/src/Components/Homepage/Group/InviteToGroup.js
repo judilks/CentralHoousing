@@ -4,52 +4,45 @@ import './Group.css'
 
 class InviteToGroup extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             currentSearch: "",
+            users: []
         }
-    
-    }
+        this.getUsers()
+    } 
 
-    users = [
-        {
-          name : 'Justin Dilks',
-          username : 'dilksj1', 
-          password: '626yjjiz!'
-        },
-        {
-          name : 'Hunter Pollpeter',
-          username : 'pollpeterh1', 
-          password: '626yjjiz!'
-        },
-        {
-          name : 'Scott Wilson',
-          username : 'wilsons1', 
-          password: '626yjjiz!'
-        },
-        {
-          name : 'Sean Rennich',
-          username : 'rennichs1', 
-          password: '626yjjiz!'
-        },
-        {
-          name : 'Jacob Miediema',
-          username : 'miediemaj1', 
-          password: '626yjjiz!'
-        },
-        {
-          name : 'Ryan Kruse',
-          username : 'kruser1', 
-          password: '626yjjiz!'
-        },
-        {
-          name : 'Steven Fyfe',
-          username : 'fyfes1', 
-          password: '626yjjiz!'
-        }
-    
-      ]
+    getUsers = () => {
+        fetch('http://localhost:3001/api/getUsers', {
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: 'same-origin', // include, *omit
+          headers: {
+            'content-type': 'application/json'
+          },
+          method: 'GET', // *GET, PUT, DELETE, etc.
+          mode: 'no cors', // no-cors, *same-origin
+        })
+        .then(res => {
+          try{
+            if(res.status == '401'){
+              throw "ERR"
+            }
+            return res.json();
+          }
+          catch(e){
+            alert(e);
+          }
+        }).then(json => {
+            for(var i in json) {
+                if(json[i].id === this.props.currentUser.id) {
+                    json.splice(i, 1)
+                }
+            }
+            this.setState({users:json})
+            console.log(json)
+        })
+      }
 
     handleSearchChange = (e) => {
         this.setState({currentSearch:e.target.value})
@@ -60,12 +53,32 @@ class InviteToGroup extends Component {
         if(this.state.currentSearch === ""){
             return filteredUsers;
         }
-        filteredUsers = this.users.filter(user => user.name.includes(this.state.currentSearch))
+        filteredUsers = this.state.users.filter(user => user.firstName.includes(this.state.currentSearch))
         return filteredUsers;
     }
 
     handleCancel = () => {
         this.props.exitSearch()
+    }
+
+    handleSendInvite = (selectedUser) => {
+        var users = {
+            'selectedUser': selectedUser,
+            'currentUser': this.props.currentUser
+        }
+        fetch('http://localhost:3001/api/sendInvite', {
+            body: JSON.stringify(users),
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *omit
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: 'POST', // *GET, PUT, DELETE, etc.
+            mode: 'no cors', // no-cors, *same-origin
+        })
+        .then(res => {
+            alert('Invite Sent')
+        })
     }
     
     render() {
@@ -77,7 +90,7 @@ class InviteToGroup extends Component {
                 <div>
                     <table className="table table-bordered" style={{margin:"20px 0px 0px 0px"}}>
                         {this.getFilteredUsersList()
-                            .map(user => <tr><td>{user.name} <button id="inviteButton" style={{float:"right"}} className="btn btn-primary">Invite</button></td></tr>)
+                            .map(user => <tr><td>{user.displayName} <button id="inviteButton" style={{float:"right"}} className="btn btn-primary" onClick={() => this.handleSendInvite(user)}>Invite</button></td></tr>)
                         }
                     </table>
                 </div>
@@ -101,4 +114,49 @@ let SearchBar = ({handleSearchChange, handleCancel}) => {
         </div>
     );
 }
+
+
+
+
+
+
+
+// users = [
+    //     {
+    //       name : 'Justin Dilks',
+    //       username : 'dilksj1', 
+    //       password: '626yjjiz!'
+    //     },
+    //     {
+    //       name : 'Hunter Pollpeter',
+    //       username : 'pollpeterh1', 
+    //       password: '626yjjiz!'
+    //     },
+    //     {
+    //       name : 'Scott Wilson',
+    //       username : 'wilsons1', 
+    //       password: '626yjjiz!'
+    //     },
+    //     {
+    //       name : 'Sean Rennich',
+    //       username : 'rennichs1', 
+    //       password: '626yjjiz!'
+    //     },
+    //     {
+    //       name : 'Jacob Miediema',
+    //       username : 'miediemaj1', 
+    //       password: '626yjjiz!'
+    //     },
+    //     {
+    //       name : 'Ryan Kruse',
+    //       username : 'kruser1', 
+    //       password: '626yjjiz!'
+    //     },
+    //     {
+    //       name : 'Steven Fyfe',
+    //       username : 'fyfes1', 
+    //       password: '626yjjiz!'
+    //     }
+    
+    //   ]
 export default InviteToGroup;

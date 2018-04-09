@@ -29,3 +29,5 @@ Group.getAverageNumber = function() {
 }
 
 module.exports = Group;
+
+
