@@ -23,6 +23,7 @@ app.listen(port, function() {
 var currentGroups = []
 var loggedInUsers = []
 
+//Will move to models file later. having trouble importing
 let Schema = mongoose.Schema
 
 var userSchema = new Schema({
@@ -76,13 +77,16 @@ var roomSchema = new Schema({
         type: String,
         required: true
     },
+    building: {
+        type: String,
+        required: true
+    },
     floor: {
         type: String,
         required: true
     },
-    building: {
-        type: String,
-        required: true
+    displayName: {
+        type:String
     },
     AC: {
         type: String,
@@ -100,43 +104,13 @@ var roomSchema = new Schema({
         type: Boolean,
         required:true
     },
-    occupants: {
-        occupant1: {
-            firstName: {
-                type: String,
-                required: false
-            },
-            lastName: {
-                type: String,
-                required: false
-            }  
-        },
-        occupant2: {
-            firstName: {
-                type: String,
-                required: false
-            },
-            lastName: {
-                type: String,
-                required: false
-            }  
-        },
-        occupant3: {
-            firstName: {
-                type: String,
-                required: false
-            },
-            lastName: {
-                type: String,
-                required: false
-            }  
-        }
-    }
+    occupants: []
         
 })
 
 
 var roomModel = mongoose.model('rooms', roomSchema)
+var userModel = mongoose.model('users', userSchema)
 
 // function generateRooms(building, numberOfRooms, floor, startingRoom) {
 //     for(i= startingRoom; i<numberOfRooms; i++){
@@ -157,7 +131,6 @@ var roomModel = mongoose.model('rooms', roomSchema)
 // }
 
 mongoose.connect('mongodb://localhost:27017/centralhousing')
-var userModel = mongoose.model('users', userSchema)
 
 router.post('/logIn/', (req, res) => {
     var username = req.body.username;
@@ -190,16 +163,8 @@ router.post('/logOut/', (req,res) => {
             loggedInUsers.splice(k, 1)
         }
     }
-    for(var i in currentGroups) {
-        for(var j in currentGroups[i].users) {
-            if(currentUser.loginInformation.username === currentGroups[i].users[j].loginInformation.username) {
-                currentGroups[i].users.splice(j, 1)
-                if(currentGroups[i].users.length === 0) {
-                    currentGroups.splice(i, 1)
-                }
-            }
-        }
-    }
+    var locations = findUserInGroup(currentUser)
+    removeUserFromGroup(locations[0], locations[1])
     res.sendStatus(202)
         
 })
@@ -225,7 +190,7 @@ router.post('/register/', (req, res) => {
             res.sendStatus(400)
         }
         else{
-            res.send(201)
+            res.sendStatus(201)
         }
     })
 })
@@ -263,8 +228,33 @@ router.post('/getInvites/', (req, res) => {
         invites.shift()
     }
     else{
-        res.send(203)
+        res.sendStatus(203)
     }
+})
+
+router.post('/acceptInvite/', (req, res) => {
+    var currentUser = req.body.currentUser
+    var selectedUser = req.body.selectedUser
+    var locations = findUserInGroup(currentUser)
+    if(removeUserFromGroup(locations[0], locations[1])){
+        locations = findUserInGroup(selectedUser)
+        if(addUserToGroup(currentUser, locations[0])) {
+            res.sendStatus(201)
+        }
+        else{
+            res.sendStatus(203)
+        }
+    }
+    else{
+        res.sendStatus(203)
+    }
+})
+
+router.post('/getGroup/', (req, res) => {
+    var currentUser = req.body
+    var locations = findUserInGroup(currentUser)
+    res.send(currentGroups[i].users)
+    console.log(currentGroups)
 })
 
 router.get('/getAverageNumberGroups/', (req, res) => {
@@ -275,7 +265,50 @@ router.get('/getAverageNumberGroups/', (req, res) => {
     res.send(averageNumbersArray)
 })
 
+router.post('/getRooms/', (req, res) => {
+    var building = req.body.building
+    var floor = req.body.floor
+    roomModel.find({'building': building, 'floor': floor, occupied:false}, function (err, rooms) {
+        res.send(rooms)
+    })
+})
 
+//Group Functions
+function removeUserFromGroup(i, j){
+    user = currentGroups[i].users.splice(j, 1)
+    if(currentGroups[i].users.length === 0) {
+        currentGroups.splice(i, 1)
+    }
+    if(user.length > 0) {
+        return true
+    }
+    else{
+        return false
+    }
+
+}
+
+function addUserToGroup(currentUser, i){
+    var currentLength = currentGroups[i].users.length
+    var newLength = currentGroups[i].users.push(currentUser)
+    if(newLength > currentLength) {
+        return true
+    }
+    else {
+        return false
+    }    
+}
+
+function findUserInGroup(currentUser){
+    for(var i in currentGroups) {
+        for(var j in currentGroups[i].users) {
+            if(currentUser.loginInformation.username === currentGroups[i].users[j].loginInformation.username) {
+                return [i,j]
+            }
+        }
+    }
+
+}
 
 
 
@@ -283,6 +316,7 @@ router.get('/getAverageNumberGroups/', (req, res) => {
 function Group(user) {
     this.users = user;
     this.averageNumber = user[0].housingNumber
+    this.groupLeader = user
 }
 
 Group.prototype.getUsers = function() {
@@ -304,11 +338,12 @@ Group.prototype.getUser = function(user) {
 }
 
 Group.prototype.getAverageNumber = function() {
-    let accumulatedNumber = 0
+    let numbers = []
     for(var i in this.users) {
-        accumulatedNumber += this.users[i].housingNumber
+        numbers.push(parseInt(this.users[i].housingNumber))
     }
-    return this.averageNumber = accumulatedNumber/this.users.length
+    let average = numbers.reduce((total, amount) => total + amount)
+    return average / numbers.length
 }
 
 module.exports = Group;

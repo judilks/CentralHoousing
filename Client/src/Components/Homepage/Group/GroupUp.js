@@ -7,7 +7,11 @@ class GroupUp extends Component {
         super(props);
         this.state = {
             loadInviteComponent: false,
-            haveInvites: false
+            haveInvites: false,
+            acceptingInvite: {
+                user: "",
+                needToAccept:false
+            } 
         }
     
     } 
@@ -17,7 +21,7 @@ class GroupUp extends Component {
           return <InviteToGroup exitSearch={this.exitInviteComponent} currentUser={this.props.currentUser}/>
         }
         else if (this.state.loadInviteComponent === false){
-          return <Group currentUser={this.props.currentUser} openSearch={this.openInviteComponent}/>
+          return <Group currentUser={this.props.currentUser} openSearch={this.openInviteComponent} rooms={this.props.rooms}/>
         }
       }
 
@@ -45,25 +49,52 @@ class GroupUp extends Component {
                     this.setState({haveInvites:false})
                 }
                 else{
-                    return res.json()
-                    
-                    
+                    return res.json()   
                 }
         })
         .then(json => {
             if(json !=undefined ){
                 let r = window.confirm(json.displayName + " has invited you to join their group");
-                if(r == true) {
-
+                if(r === true) {
+                    this.setState({acceptingInvite:{needToAccept:true, user:json}, haveInvites:true}) 
                 }
-                this.setState({haveInvites:true})
             }
             
         })
     }
+
+    acceptInvite = (selectedUser) => {
+        var users = {
+            'selectedUser': selectedUser,
+            'currentUser': this.props.currentUser
+        }
+        return fetch('http://localhost:3001/api/acceptInvite', {
+            body: JSON.stringify(users),
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *omit
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: 'POST', // *GET, PUT, DELETE, etc.
+            mode: 'no cors', // no-cors, *same-origin
+        })
+        .then(res => {
+                if(res.status === 203){
+                    alert("Failed to join group")
+                }
+                this.setState({acceptingInvite:{needToAccept:false, user:""}, haveInvites:false}) 
+        })
+    }
+
+    checkAcceptInvite = () => {
+        if(this.state.acceptingInvite.needToAccept) {
+            this.acceptInvite(this.state.acceptingInvite.user)
+        }
+    }
     
     render() {
         this.getInvites()
+        this.checkAcceptInvite()
         return (
             <div container="container" className="center">
                 {this.checkState()}

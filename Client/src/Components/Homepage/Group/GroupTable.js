@@ -6,63 +6,64 @@ class GroupTable extends Component {
         super();
         this.state = {
             username : props.currentUser.loginInformation.username,
-            currentGroup: {
-                GroupLeader: props.currentUser.firstName + ' ' + props.currentUser.lastName,
-                user2: "",
-                user3: "",
-                user4: "",
-                user5: "",
-                user6: "",
-                user7: "",
-                user8: ""
-
-            }
+            currentGroup: [props.currentUser],
+            rooms: props.rooms
           };
     
     } 
 
-    createGroup = () => {
+    getGroup = () => {
+        fetch('http://localhost:3001/api/getGroup', {
+            body: JSON.stringify(this.props.currentUser),
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *omit
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: 'POST', // *GET, PUT, DELETE, etc.
+            mode: 'no cors', // no-cors, *same-origin
+        })
+        .then(res => {
+            if(res.status != 500)
+                return res.json()
+        })
+        .then(json => {
+            this.setState({currentGroup: json})
+        })
     }
+      
+    handleRoomSelection = (currentUser) => {
+        var userInGroup = this.state.currentGroup.find(function(user) {
+            return user.id === currentUser.id
+        })
+        var roomSelection = document.getElementById("roomSelection")
+        if(roomSelection!= null)
+            userInGroup.roomNumber = roomSelection.value
+    } 
 
-    handleInviteSelected = () => {
-        this.props.openSearch()
-    }
     
     render() {
-        
+        //this.getGroup()
         return (
             <div container="container" className="center">
                  <table className="table table-bordered">
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th style={{width:"60%"}}>Room</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>{this.state.currentGroup.GroupLeader}</td>
-                        </tr>
-                        <tr>
-                            <td>{this.state.currentGroup.user2}</td>
-                        </tr>
-                        <tr>
-                            <td>{this.state.currentGroup.user3}</td>
-                        </tr>
-                        <tr>
-                            <td>{this.state.currentGroup.user4}</td>
-                        </tr>
-                        <tr>
-                            <td>{this.state.currentGroup.user5}</td>
-                        </tr>
-                        <tr>
-                            <td>{this.state.currentGroup.user6}</td>
-                        </tr>
-                        <tr>
-                            <td>{this.state.currentGroup.user7}</td>
-                        </tr>
-                        <tr>
-                            <td>{this.state.currentGroup.user8}</td>
-                        </tr>
+                    {this.state.currentGroup
+                            .map(user => <tr><td>{user.displayName}</td>
+                            <td>
+                                <select className="form-control" id="roomSelection" placeholder="Select a Room" onChange={this.handleRoomSelection(user)}>
+                                    <option defaultValue="" placeholder="Room" selected disabled>Room</option>
+                                    {this.props.rooms.
+                                    map(room => <option value={room.displayName}>{room.displayName}</option>)}/
+                                </select>
+                            </td></tr>)
+                        }
                     </tbody>
                 </table>
             </div>

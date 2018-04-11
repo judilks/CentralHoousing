@@ -9,9 +9,6 @@ class Group extends Component {
             
           };
     
-    } 
-
-    createGroup = () => {
     }
 
     handleInviteSelected = () => {
@@ -22,7 +19,7 @@ class Group extends Component {
         
         return (
             <div container="container" className="center">
-                <GroupTable currentUser = {this.props.currentUser}/>
+                <GroupTable currentUser = {this.props.currentUser} rooms={this.props.rooms}/>
                 <div className="btn-group" role="group">
                     <button className="btn btn-primary" onClick={this.handleInviteSelected}>Invite to Group</button>
                     <button id="leaveGroup" className="btn btn-secondary">Leave Group</button>
