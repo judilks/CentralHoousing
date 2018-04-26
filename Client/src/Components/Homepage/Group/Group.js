@@ -14,6 +14,10 @@ class Group extends Component {
     handleInviteSelected = () => {
         this.props.openSearch()
     }
+
+    handleLeaveGroup = () => {
+        this.props.leaveGroup()
+    }
     
     render() {
         
@@ -22,7 +26,7 @@ class Group extends Component {
                 <GroupTable currentUser = {this.props.currentUser} rooms={this.props.rooms}/>
                 <div className="btn-group" role="group">
                     <button className="btn btn-primary" onClick={this.handleInviteSelected}>Invite to Group</button>
-                    <button id="leaveGroup" className="btn btn-secondary">Leave Group</button>
+                    <button id="leaveGroup" className="btn btn-secondary" onClick={this.handleLeaveGroup}>Leave Group</button>
                 </div>
             </div>
             

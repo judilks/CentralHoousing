@@ -21,7 +21,7 @@ class GroupUp extends Component {
           return <InviteToGroup exitSearch={this.exitInviteComponent} currentUser={this.props.currentUser}/>
         }
         else if (this.state.loadInviteComponent === false){
-          return <Group currentUser={this.props.currentUser} openSearch={this.openInviteComponent} rooms={this.props.rooms}/>
+          return <Group currentUser={this.props.currentUser} openSearch={this.openInviteComponent} rooms={this.props.rooms} leaveGroup={this.handleLeaveGroup}/>
         }
       }
 
@@ -90,6 +90,27 @@ class GroupUp extends Component {
         if(this.state.acceptingInvite.needToAccept) {
             this.acceptInvite(this.state.acceptingInvite.user)
         }
+    }
+
+    handleLeaveGroup = () => {
+        return fetch('http://localhost:3001/api/leaveGroup', {
+            body: JSON.stringify(this.props.currentUser),
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *omit
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: 'POST', // *GET, PUT, DELETE, etc.
+            mode: 'no cors', // no-cors, *same-origin
+        })
+        .then(res => {
+                if(res.status === 203){
+                    alert("Failed to leave group")
+                }
+                else{
+                    alert("Successfully left group")
+                }
+        })
     }
     
     render() {

@@ -253,8 +253,18 @@ router.post('/acceptInvite/', (req, res) => {
 router.post('/getGroup/', (req, res) => {
     var currentUser = req.body
     var locations = findUserInGroup(currentUser)
-    res.send(currentGroups[i].users)
+    res.send(currentGroups[locations[0]].users)
+})
+
+router.post('/leaveGroup/', (req,res) => {
+    currentUser = req.body
+    var locations = findUserInGroup(currentUser)
+    removeUserFromGroup(locations[0], locations[1])
+    var group = new Group([currentUser])
+    currentGroups.push(group)
     console.log(currentGroups)
+    res.sendStatus(202)
+        
 })
 
 router.get('/getAverageNumberGroups/', (req, res) => {
@@ -326,12 +336,12 @@ Group.prototype.getUsers = function() {
 Group.prototype.addUser = function(user) {
     this.users.push(user)
 }
-
+//refactor not in use
 Group.prototype.removeUser = function(user) {
     let userLocation = this.users.find(user)
     this.users.splice(userLocation, 1)
 }
-
+//refactor not in use
 Group.prototype.getUser = function(user) {
     let userLocation = this.users.find(user)
     return this.users[userLocation]

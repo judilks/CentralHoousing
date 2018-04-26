@@ -5,7 +5,6 @@ class GroupTable extends Component {
     constructor(props) {
         super();
         this.state = {
-            username : props.currentUser.loginInformation.username,
             currentGroup: [props.currentUser],
             rooms: props.rooms
           };
@@ -28,12 +27,19 @@ class GroupTable extends Component {
                 return res.json()
         })
         .then(json => {
-            this.setState({currentGroup: json})
+            if(json != undefined){
+                let validUser = json.find((user) => {
+                    return user.id === this.props.currentUser.id
+                })
+                if(validUser != undefined)
+                    this.setState({currentGroup: json})
+            }
+            
         })
     }
       
     handleRoomSelection = (currentUser) => {
-        var userInGroup = this.state.currentGroup.find(function(user) {
+        var userInGroup = this.state.currentGroup.find((user) => {
             return user.id === currentUser.id
         })
         var roomSelection = document.getElementById("roomSelection")
@@ -43,7 +49,7 @@ class GroupTable extends Component {
 
     
     render() {
-        //this.getGroup()
+        this.getGroup()
         return (
             <div container="container" className="center">
                  <table className="table table-bordered">
