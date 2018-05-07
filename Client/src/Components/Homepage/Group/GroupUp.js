@@ -14,14 +14,22 @@ class GroupUp extends Component {
             } 
         }
     
-    } 
+    }
+    
+    componentDidMount() {
+        this.intervalID = setInterval(() => this.getInvites(), 5000)
+    }
+    
+    componentWillUnmount() {
+        clearInterval(this.intervalID)
+    }
     
     checkState = () => {
         if (this.state.loadInviteComponent === true) {
           return <InviteToGroup exitSearch={this.exitInviteComponent} currentUser={this.props.currentUser}/>
         }
         else if (this.state.loadInviteComponent === false){
-          return <Group currentUser={this.props.currentUser} openSearch={this.openInviteComponent} rooms={this.props.rooms} leaveGroup={this.handleLeaveGroup}/>
+          return <Group currentUser={this.props.currentUser} openSearch={this.openInviteComponent} rooms={this.props.rooms} leaveGroup={this.handleLeaveGroup} currentGroup={this.props.currentGroup} turnToRegister={this.props.turnToRegister} needToDisable={this.props.needToDisable}/>
         }
       }
 
