@@ -124,8 +124,8 @@ class Register extends Component {
 			    <input type="text" className="form-control" placeholder="Enter email"  value={this.state.registerInformation.email} onChange={this.handleEmailChange}/>
         </div>
         <div className="form-group">
-          <select ref="Gender" className="form-control" placeholder="Select a Gender" value={this.state.registerInformation.gender} onChange={this.handleGenderChange}>
-            <option defaultValue="" disabled selected>Select your gender</option>
+          <select className="form-control" value={this.state.registerInformation.gender} onChange={this.handleGenderChange}>
+            <option defaultValue="" placeholder="Gender" selected>Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>

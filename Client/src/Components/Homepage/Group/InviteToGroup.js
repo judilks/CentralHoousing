@@ -10,8 +10,15 @@ class InviteToGroup extends Component {
             currentSearch: "",
             users: []
         }
-        this.getUsers()
-    } 
+    }
+    
+    componentDidMount() {
+        this.intervalID = setInterval(this.getUsers(), 10000)
+    }
+    
+    componentWillUnmount() {
+        clearInterval(this.intervalID)
+    }
 
     getUsers = () => {
         fetch('http://localhost:3001/api/getUsers', {
