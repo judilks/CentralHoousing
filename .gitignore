@@ -1,13 +1,13 @@
-!client/
-!server/
+!/client/
+!/server/
 !.vscode/
 !package.json
 !.gitignore
 
-!client/public/
-!client/src/
-!client/README.md
-!client/package.json
+!/client/public/
+!/client/src/
+!/client/README.md
+!/client/package.json
 
 node_modules/*
 client/node_modules/*
