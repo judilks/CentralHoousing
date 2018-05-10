@@ -1,0 +1,10 @@
+!client/
+!server/
+!.vscode/
+!package.json
+!.gitignore
+
+!client/public/
+!client/src/
+!client/README.md
+!client/package.json
