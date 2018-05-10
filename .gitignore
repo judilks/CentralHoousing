@@ -4,3 +4,8 @@
 !client/
 !server/
 !package.json
+
+!client/src/
+!client/public/
+!client/package.json
+!client/README.md
