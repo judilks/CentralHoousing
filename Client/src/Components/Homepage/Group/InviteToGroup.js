@@ -32,8 +32,8 @@ class InviteToGroup extends Component {
         })
         .then(res => {
           try{
-            if(res.status == '401'){
-              throw "ERR"
+            if(res.status === 401){
+                throw new Error("error");
             }
             return res.json();
           }
@@ -96,9 +96,11 @@ class InviteToGroup extends Component {
                 </div>
                 <div>
                     <table className="table table-bordered" style={{margin:"20px 0px 0px 0px"}}>
-                        {this.getFilteredUsersList()
-                            .map(user => <tr><td>{user.displayName} <button id="inviteButton" style={{float:"right"}} className="btn btn-primary" onClick={() => this.handleSendInvite(user)}>Invite</button></td></tr>)
-                        }
+                        <tbody>
+                            {this.getFilteredUsersList()
+                                .map(user => <tr key={user.id}><td>{user.displayName} <button id="inviteButton" style={{float:"right"}} className="btn btn-primary" onClick={() => this.handleSendInvite(user)}>Invite</button></td></tr>)
+                            }
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -110,10 +112,6 @@ class InviteToGroup extends Component {
 }
 
 let SearchBar = ({handleSearchChange, handleCancel}) => {
-    var searchStyle = {
-        margin:"20px 0px 0px 0px",
-        width:"70%",
-    };
     return (
         <div>
             <input type="text" className="form-control Search-bar" placeholder="Search.." name="search" onChange={handleSearchChange} style={{display:"inline-block"}}/>

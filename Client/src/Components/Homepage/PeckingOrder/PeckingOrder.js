@@ -27,16 +27,16 @@ class PeckingOrder extends Component {
             <div className="container">
                 <div>
                     <table className="table table-bordered" style={{margin:"20px 0px 0px 0px"}}>
-                    {sortedOrder.map(groupNumber => {
+                        <tbody>
+                            {sortedOrder.map(groupNumber => {
                                 if(groupNumber === this.state.averageNumber) {
                                     return <tr><td style={{background:"green", color:"white"}}>{groupNumber}</td></tr>
                                 }
                                 else {
                                     return <tr><td>{groupNumber}</td></tr>
                                 } 
-                            })
-                            
-                        }
+                            })}
+                        </tbody>
                     </table>
                 </div>
             </div>

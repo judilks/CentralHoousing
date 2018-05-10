@@ -43,8 +43,8 @@ class App extends Component {
     })
     .then(res => {
       try{
-        if(res.status == '401'){
-          throw "Invalid Login"
+        if(res.status === 401){
+          throw new Error("Invalid Login");
         }
         return res.json();
       }
@@ -102,8 +102,8 @@ class App extends Component {
     })
     .then(res => {
       try{
-        if(res.status == '401'){
-          throw "Invalid Logout"
+        if(res.status === 401){
+          throw new Error("Invalid Logout");
         }
         return res;
       }
@@ -111,7 +111,7 @@ class App extends Component {
         alert(e);
       }
     }).then(res => {
-      if(res.status == "202")
+      if(res.status === 202)
         this.setState({loggedIn:false, currentUser: ""})
     })
   }

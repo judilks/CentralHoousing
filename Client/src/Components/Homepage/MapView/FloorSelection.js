@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import FloorContainer from './FloorContainer';
-import { ENGINE_METHOD_DIGESTS } from 'constants';
 class FloorSelection extends Component {
 
     constructor() {

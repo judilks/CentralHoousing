@@ -22,15 +22,11 @@
   },
   "homepage": "https://github.com/judilks/CentralHousing#readme",
   "dependencies": {
-    "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "concurrently": "^3.5.1",
     "express": "^4.16.2",
-    "foreman": "^2.0.0",
-    "jquery": "^3.3.1",
     "marker": "^0.1.2",
     "mongoose": "^5.0.6",
-    "nodemon": "^1.15.1",
-    "react-chat-window": "^1.0.8"
+    "nodemon": "^1.15.1"
   }
 }

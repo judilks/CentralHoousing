@@ -27,7 +27,7 @@ class Group extends Component {
     }
 
     handleRoomsSelected = (newStatus, updatedGroup) => {
-        if(this.state.roomsSelected != newStatus)
+        if(this.state.roomsSelected !== newStatus)
             this.setState({roomsSelected:newStatus, updatedGroup:updatedGroup})
     }
 
@@ -63,7 +63,7 @@ class Group extends Component {
                 mode: 'no cors', // no-cors, *same-origin
             })
             .then(res => {
-                if(res.status == 203){
+                if(res.status === 203){
                     alert("Failed to submit housing registration")
                 }
                 else{
