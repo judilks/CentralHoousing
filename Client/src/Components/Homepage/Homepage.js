@@ -28,23 +28,23 @@ class Homepage extends Component {
     }
 
     checkForGroup = () => {
-        if(this.state.currentGroup != "") {
+        if(this.state.currentGroup !== "") {
             return <GroupUp currentUser={this.props.currentUser} rooms={this.state.rooms} currentGroup={this.state.currentGroup} turnToRegister={this.state.turnToRegister} needToDisable={this.state.needToDisable}/>
         }
     }
 
     checkForAvgNumber = () => {
-        if(this.state.currentGroup != "" && this.state.peckingOrder != "") {
+        if(this.state.currentGroup !== "" && this.state.peckingOrder !== "") {
             return <PeckingOrder averageNumber={this.state.currentGroup.averageNumber} peckingOrder={this.state.peckingOrder}/>
         }
     }
 
     checkTurnToRegister = () => {
-        if(this.state.peckingOrder[0] === this.state.currentGroup.averageNumber && this.state.currentGroup != "") {
-            if(this.state.turnToRegister != true)
+        if(this.state.peckingOrder[0] === this.state.currentGroup.averageNumber && this.state.currentGroup !== "") {
+            if(this.state.turnToRegister !== true)
                 this.setState({turnToRegister: true})
         }
-        else if(this.state.turnToRegister != false){
+        else if(this.state.turnToRegister !== false){
             this.setState({turnToRegister: false})
         }
     }
@@ -65,19 +65,19 @@ class Homepage extends Component {
             mode: 'no cors', // no-cors, *same-origin
         })
         .then(res => {
-            if(res.status != 500)
+            if(res.status !== 500)
                 return res.json()
         })
         .then(json => {
             json.peckingOrder.sort(function(a, b){return a - b}); 
-            if(json != undefined){
+            if(json !== undefined){
                 let validUser = undefined
-                if(json.currentGroup != ""){
+                if(json.currentGroup !== ""){
                     validUser = json.currentGroup.users.find((user) => {
                         return user.id === this.props.currentUser.id
                     })
                 }
-                if(validUser != undefined) {
+                if(validUser !== undefined) {
                     this.setState({currentGroup: json.currentGroup, peckingOrder: json.peckingOrder, needToDisable:false})
                 }
                 else{
@@ -100,8 +100,8 @@ class Homepage extends Component {
         })
         .then( (res) => {
             try{
-                if(res.status == '401'){
-                throw "Invalid Login"
+                if(res.status === 401){
+                throw new Error("Invalid Login") 
                 }
                 return res.json();
             }

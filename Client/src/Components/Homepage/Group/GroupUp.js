@@ -61,7 +61,7 @@ class GroupUp extends Component {
                 }
         })
         .then(json => {
-            if(json !=undefined ){
+            if(json !== undefined ){
                 let r = window.confirm(json.displayName + " has invited you to join their group");
                 if(r === true) {
                     this.setState({acceptingInvite:{needToAccept:true, user:json}, haveInvites:true}) 

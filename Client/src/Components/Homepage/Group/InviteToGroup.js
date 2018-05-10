@@ -32,8 +32,8 @@ class InviteToGroup extends Component {
         })
         .then(res => {
           try{
-            if(res.status == '401'){
-              throw "ERR"
+            if(res.status === 401){
+              throw new Error("ERR")
             }
             return res.json();
           }
@@ -110,10 +110,6 @@ class InviteToGroup extends Component {
 }
 
 let SearchBar = ({handleSearchChange, handleCancel}) => {
-    var searchStyle = {
-        margin:"20px 0px 0px 0px",
-        width:"70%",
-    };
     return (
         <div>
             <input type="text" className="form-control Search-bar" placeholder="Search.." name="search" onChange={handleSearchChange} style={{display:"inline-block"}}/>

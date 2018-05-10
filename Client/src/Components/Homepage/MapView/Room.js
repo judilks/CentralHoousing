@@ -27,11 +27,11 @@ class Room extends Component {
             return <div className={classString}>Empty</div>      
         }
         else{
-            if(this.state.rooms != undefined)
+            if(this.state.rooms !== undefined)
                 var currentRoom = this.state.rooms.find((room) => {
                     return room.roomNumber === roomInfo[0]})
             //Check if room is number
-            if(!isNaN(parseInt(roomInfo[0]))) {
+            if(!isNaN(parseInt(roomInfo[0], 10))) {
                 //Check if room is occupied
                 if(currentRoom === undefined){
                     return <div className={classString + " RoomOccupied"}>{roomInfo[0]}</div>

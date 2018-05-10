@@ -27,11 +27,12 @@ class GroupTable extends Component {
     }
       
     handleRoomSelection = (user) => {
-        if(this.state.groupSelections.length != 0){
-            var newGroup = this.state.groupSelections
+        var newGroup = ""
+        if(this.state.groupSelections.length !== 0){
+            newGroup = this.state.groupSelections
         }
         else {
-            var newGroup = this.state.currentGroup
+            newGroup = this.state.currentGroup
         }
         var currentUser = user
         var userInGroup = newGroup.users.find((user) => {
@@ -46,7 +47,7 @@ class GroupTable extends Component {
 
     checkRoomsSelected = (group) => {
         for(var i in group.users) {
-            if(group.users[i].roomNumber == undefined) {
+            if(group.users[i].roomNumber === undefined) {
                 return false
             }
         }
@@ -70,16 +71,15 @@ class GroupTable extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                    {this.state.currentGroup.users
-                            .map(user => <tr><td>{roomId = user.displayName}</td>
-                            <td>
-                                <select className="form-control" id={roomId} placeholder="Select a Room" onChange={() => {this.handleRoomSelection(user)}} disabled={!this.state.turnToRegister}>
-                                    <option selected="selected" disabled>Select a room</option>
-                                    {this.props.rooms.
-                                    map(room => <option value={room.displayName}>{room.displayName}</option>)}
-                                </select>
-                            </td></tr>, this)
-                    }
+                        {this.state.currentGroup.users
+                                .map(user => <tr key={user.id}><td>{roomId = user.displayName}</td>
+                                <td>
+                                    <select className="form-control" id={roomId} placeholder="Select a Room" onChange={() => {this.handleRoomSelection(user)}} disabled={!this.state.turnToRegister}>
+                                        <option selected="selected" disabled>Select a room</option>
+                                        {this.props.rooms.map(room => <option key={room.displayName} value={room.displayName}>{room.displayName}</option>)}
+                                    </select>
+                                </td></tr>, this)
+                        }
                     </tbody>
                 </table>
             </div> 
