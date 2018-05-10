@@ -30,10 +30,10 @@ class PeckingOrder extends Component {
                         <tbody>
                             {sortedOrder.map(groupNumber => {
                                 if(groupNumber === this.state.averageNumber) {
-                                    return <tr><td style={{background:"green", color:"white"}}>{groupNumber}</td></tr>
+                                    return <tr key={groupNumber}><td style={{background:"green", color:"white"}}>{groupNumber}</td></tr>
                                 }
                                 else {
-                                    return <tr><td>{groupNumber}</td></tr>
+                                    return <tr key={groupNumber}><td>{groupNumber}</td></tr>
                                 } 
                             })}
                         </tbody>

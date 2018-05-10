@@ -47,7 +47,6 @@ class InviteToGroup extends Component {
                 }
             }
             this.setState({users:json})
-            console.log(json)
         })
       }
 
