@@ -1,80 +1,64 @@
 import React, { Component } from 'react';
+import FloorContainer from './FloorContainer';
+import FloorSelection from './FloorSelection';
 class MapView extends Component {
 
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
             mapViewInfo: {
                 building: "",
                 floor: ""
             },
-            haveData: false
+            rooms:[]
         }
-    } 
+    }
+    componentDidMount() {
+        this.intervalID = setInterval(() => this.getRooms(), 3000)
+    }
     
-    checkState = () => {
-        if(this.state.mapViewInfo.building != "" && this.state.mapViewInfo.floor != "" && this.state.haveData === false) {
-            this.props.getRooms(this.state.mapViewInfo)
-            this.setState({
-                mapViewInfo: {
-                    building: this.state.mapViewInfo.building,
-                    floor: this.state.mapViewInfo.floor
-                },
-                haveData:true
+    componentWillUnmount(){
+        clearInterval(this.intervalID)
+    }
+
+    handleSelectionChanges = (mapViewInfo) => {
+        this.setState({mapViewInfo:mapViewInfo})
+    }
+
+    checkForFloorData = () => {
+        if(this.state.rooms.length !== 0)
+            return <FloorContainer mapViewInfo = {this.state.mapViewInfo} rooms = {this.state.rooms}/>
+    }
+
+    getRooms = () => {
+        if(this.state.mapViewInfo.building !== "" && this.state.mapViewInfo.floor !== "") {
+            fetch('http://localhost:3001/api/getRooms', {
+            body: JSON.stringify(this.state.mapViewInfo),
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *omit
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: 'POST', // *GET, PUT, DELETE, etc.
+            mode: 'no cors', // no-cors, *same-origin
+            })
+            .then(res => {
+                return res.json()
+            })
+            .then(json => {
+                json.sort(function(a, b){return a.roomNumber - b.roomNumber});
+                this.setState({rooms: json})
+                this.props.updateRooms(json)
             })
         }
-    }
-
-    handleBuildingChange = (e) => {
-        this.setState({
-            mapViewInfo: {
-                building: e.target.value,
-                floor: this.state.mapViewInfo.floor
-            },
-            haveData:false
-            
-        })
-    }
-
-    handleFloorChange = (e) => {
-        this.setState({
-            mapViewInfo: {
-                building: this.state.mapViewInfo.building,
-                floor: e.target.value
-            },
-            haveData:false
-            
-        })
+        
     }
     
     render() {  
-        this.checkState()
         return (
             <div container="container" className="center">
-                <div className="row">
-                    <div className= "col-sm-5">
-                    </div>
-                    <div className= "col-lg-2 frame">
-                        <select className="form-control" onChange={this.handleBuildingChange}>
-                            <option defaultValue="" placeholder="Building" selected disabled>Building</option>
-                            <option value="Gaass">Gaass</option>
-                            <option value="Pietenpol">Pietenpol</option>
-                            <option value="Scholte">Scholte</option>
-                            <option value="Graham">Graham</option>
-                        </select>
-                    </div>
-                    <div className= "col-lg-2 frame">
-                        <select className="form-control" onChange={this.handleFloorChange}>
-                            <option defaultValue="" placeholder="Floor" selected disabled>Floor</option>
-                            <option value="1st">1st</option>
-                            <option value="2nd">2nd</option>
-                            <option value="3rd">3rd</option>
-                            {/* <option value="4th">4th</option> */}
-                        </select>
-                    </div>
-                    <div className= "col-sm-1">
-                    </div>
-                </div>
+                <FloorSelection handleSelectionChanges = {this.handleSelectionChanges}/>
+                {this.checkForFloorData()}
             </div>
         )
     }

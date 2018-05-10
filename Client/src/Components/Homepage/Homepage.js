@@ -20,6 +20,7 @@ class Homepage extends Component {
     componentDidMount() {
         this.intervalID = setInterval(() => this.getGroupInfo(), 3000)
         this.getGroupInfo()
+        
     }
     
     componentWillUnmount() {
@@ -39,30 +40,17 @@ class Homepage extends Component {
     }
 
     checkTurnToRegister = () => {
-        if(this.state.peckingOrder[0] === this.state.currentGroup.averageNumber && this.state.turnToRegister != true && this.state.currentGroup != "") {
-            this.setState({turnToRegister: true})
+        if(this.state.peckingOrder[0] === this.state.currentGroup.averageNumber && this.state.currentGroup != "") {
+            if(this.state.turnToRegister != true)
+                this.setState({turnToRegister: true})
+        }
+        else if(this.state.turnToRegister != false){
+            this.setState({turnToRegister: false})
         }
     }
 
-
-    getRooms = (mapDisplayInfo) => {
-        fetch('http://localhost:3001/api/getRooms', {
-            body: JSON.stringify(mapDisplayInfo),
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *omit
-            headers: {
-                'content-type': 'application/json'
-            },
-            method: 'POST', // *GET, PUT, DELETE, etc.
-            mode: 'no cors', // no-cors, *same-origin
-        })
-        .then(res => {
-            return res.json()
-        })
-        .then(json => {
-            json.sort(function(a, b){return a.roomNumber - b.roomNumber});
-            this.setState({rooms: json})
-        })
+    updateRooms = (rooms) => {
+        this.setState({rooms: rooms})
     }
 
     getGroupInfo = () => {
@@ -136,7 +124,7 @@ class Homepage extends Component {
                         {this.checkForAvgNumber()}
                     </div>
                     <div className= "col-lg-7 frame">
-                        <MapView getRooms={this.getRooms}/>
+                        <MapView updateRooms = {this.updateRooms}/>
                     </div>
                     <div className= "col-sm-3">
                         {this.checkForGroup()}

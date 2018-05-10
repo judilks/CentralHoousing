@@ -27,5 +27,69 @@
   to { transform: rotate(360deg); }
 }
 
+.Floor{
+  width: 100%;
+  height: 100%;
+  margin-top:65px;
+  margin-left:75px
+}
+
+.FloorRow{
+  height:45px;
+  display:block
+}
+
+.Empty {
+  border:none;
+  display: inline-block;
+  width: 55px;
+  height: 45px;
+  color:white;
+}
+
+.Room{
+  border:1px solid;
+  display: inline-block;
+  width: 55px;
+  height: 45px;
+  background-color:whitesmoke;
+}
+
+.NoTop {
+  border-top:1px solid whitesmoke;
+}
+
+.NoRight {
+  border-right:1px solid whitesmoke;
+}
+
+.NoLeft {
+  border-left:1px solid whitesmoke;
+}
+
+.NoBottom {
+  border-bottom:1px solid whitesmoke;
+}
+
+.HaveRight {
+  border-right: 1px solid black;
+}
+.HaveLeft {
+  border-left: 1px solid black;
+}
+.HaveTop {
+  border-top: 1px solid black;
+}
+.HaveBottom {
+  border-bottom: 1px solid black;
+}
+
+.RoomOccupied{
+  background-color: red;
+}
+
+
+
+
 
 

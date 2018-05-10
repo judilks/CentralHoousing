@@ -164,7 +164,8 @@ router.post('/logOut/', (req,res) => {
         }
     }
     var locations = findUserInGroup(currentUser)
-    removeUserFromGroup(locations[0], locations[1])
+    if(locations != undefined)
+        removeUserFromGroup(locations[0], locations[1])
     res.sendStatus(202)
         
 })
@@ -312,7 +313,8 @@ router.post('/confirmRoomSelection/', (req,res) => {
         })
     });
     var locations = findUserInGroup(newGroup.users[0])
-    currentGroups.splice(locations[0], 1)
+    if(locations != undefined)
+    removeUserFromGroup(locations[0], locations[1])
 })
 
 //Group Functions

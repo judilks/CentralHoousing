@@ -122,7 +122,6 @@ class GroupUp extends Component {
     }
     
     render() {
-        this.getInvites()
         this.checkAcceptInvite()
         return (
             <div container="container" className="center">
