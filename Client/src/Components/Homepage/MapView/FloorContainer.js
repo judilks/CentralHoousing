@@ -72,7 +72,7 @@ class FloorContainer extends Component {
                 {floor.map(row => {
                     return <div className="FloorRow">
                     {row.map(roomNumber => {
-                        return <Room roomNumber={roomNumber} rooms = {this.props.rooms}/>
+                        return <Room key={roomNumber} roomNumber={roomNumber} rooms = {this.props.rooms}/>
                     })}
                     </div>        
                 })}

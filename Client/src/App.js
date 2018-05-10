@@ -24,7 +24,6 @@ class App extends Component {
       return <Login submitLogin = {this.handleSubmitLogin} registerSelected={this.handleRegisterSelected}/>
     }
     else if (this.state.loggedIn === true) {
-      console.log(this.state)
       return <HomepageContainer currentUser = {this.state.currentUser}/>
     }
   }
@@ -85,7 +84,6 @@ class App extends Component {
 
 
   handleRegisterSelected = () => {
-    console.log('register selected')
     this.setState({needToRegister:true});
   }
 

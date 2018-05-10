@@ -277,7 +277,6 @@ router.post('/leaveGroup/', (req,res) => {
     removeUserFromGroup(locations[0], locations[1])
     var group = new Group([currentUser])
     currentGroups.push(group)
-    console.log(currentGroups)
     res.sendStatus(202)
         
 })
