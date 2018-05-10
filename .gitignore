@@ -8,3 +8,6 @@
 !client/src/
 !client/README.md
 !client/package.json
+
+node_modules/*
+client/node_modules/*
